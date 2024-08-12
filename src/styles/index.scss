@@ -1,7 +1,7 @@
 @import "variables";
 @import "breakpoints";
 
-.cani-react-media-library {
+.react-media-library {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -24,7 +24,7 @@
   .icon-checkmark,
   .icon-success {
     &:before {
-      content: '\2713';
+      content: "\2713";
       display: inline-block;
     }
   }
@@ -92,7 +92,6 @@
       margin: 1rem 0;
 
       &__item {
-
         button {
           border-top: 1px solid $gray-200;
           border-left: 1px solid $gray-200;
