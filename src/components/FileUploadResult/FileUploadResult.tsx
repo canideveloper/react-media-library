@@ -22,19 +22,19 @@ function renderBadge(status: FileUploadStatus): ReactElement {
   switch (status) {
     case FileUploadStatus.FAILED:
       return (
-        <div className="react-media-library__file-upload-result__list__item__icon-failed">
+        <div className="react-media-library__file-upload-result__list__item__badge--failed">
           Failed
         </div>
       );
     case FileUploadStatus.PROCESSING:
       return (
-        <div className="react-media-library__file-upload-result__list__item__icon-processing">
+        <div className="react-media-library__file-upload-result__list__item__badge--processing">
           Processing
         </div>
       );
     case FileUploadStatus.SUCCESS:
       return (
-        <div className="react-media-library__file-upload-result__list__item__icon-success">
+        <div className="react-media-library__file-upload-result__list__item__badge--success">
           Success
         </div>
       );

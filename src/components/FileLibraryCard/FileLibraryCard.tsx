@@ -25,15 +25,15 @@ const FileLibraryCard: React.FC<FileLibraryListItem> = (
           alt={props.filename}
         />
       )}
-      {props.filename && (
+      {props.original_filename && (
         <h4 className="react-media-library__file-library-card__title">
-          {props.filename}
+          {props.original_filename}
         </h4>
       )}
       <ul className="react-media-library__file-library-card__list">
-        {props.original_filename && (
+        {props.filename && (
           <li className="react-media-library__file-library-card__list__item">
-            {props.original_filename}
+            {props.filename}
           </li>
         )}
         {props.size && (
