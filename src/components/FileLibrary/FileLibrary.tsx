@@ -1,7 +1,11 @@
 import React, { ReactElement, useContext, useMemo, useState } from "react";
+import { List, Layout, Button, Typography, Empty } from "antd";
 import FileLibraryPager from "../FileLibraryPager/FileLibraryPager";
 import { FileLibraryListItem } from "../../../types";
 import { ReactMediaLibraryContext } from "../../context/ReactMediaLibraryContext";
+
+const { Content, Sider } = Layout;
+const { Text } = Typography;
 
 const FileLibrary: React.FC = (): ReactElement => {
   const {
@@ -17,9 +21,11 @@ const FileLibrary: React.FC = (): ReactElement => {
     selectedItemsComponent,
     filesSelectCallback,
   } = useContext(ReactMediaLibraryContext);
+
   const fileLibraryListSorted = useMemo(() => {
     return [...fileLibraryList].sort(sortArray);
   }, [fileLibraryList, sortArray]);
+
   const itemsPerPage = 12;
   const firstItemIndex = defaultSelectedItemIds?.length
     ? fileLibraryListSorted.findIndex(
@@ -37,7 +43,6 @@ const FileLibrary: React.FC = (): ReactElement => {
       let valA: any = sortProperty && a[sortProperty] ? a[sortProperty] : 0;
       let valB: any = sortProperty && b[sortProperty] ? b[sortProperty] : 0;
 
-      // If value is type string, ignore upper and lowercase
       if (typeof valA === "string") valA = valA.toUpperCase();
       if (typeof valB === "string") valB = valB.toUpperCase();
 
@@ -58,19 +63,15 @@ const FileLibrary: React.FC = (): ReactElement => {
     if (multiSelect) {
       const newSelectedItems = [...selectedItems];
       if (foundIndex > -1) {
-        // Remove item from selection if already exists
         newSelectedItems.splice(foundIndex, 1);
       } else {
-        // Add item to selection if not exists
         newSelectedItems.push(item);
       }
       setSelectedItems(newSelectedItems);
     } else {
       if (foundIndex > -1) {
-        // Remove item from selection
         setSelectedItems([]);
       } else {
-        // Add item to selection
         setSelectedItems([item]);
       }
     }
@@ -82,8 +83,6 @@ const FileLibrary: React.FC = (): ReactElement => {
     const arrayStart = (page - 1) * itemsPerPage;
     let arrayEnd = arrayStart + itemsPerPage;
     if (arrayEnd > fileLibraryList.length) {
-      // If calculated end extends past length of actual array
-      // Set calculated end as length of array
       arrayEnd = fileLibraryList.length;
     }
 
@@ -94,7 +93,7 @@ const FileLibrary: React.FC = (): ReactElement => {
           (item) => item.id === element.id
         );
         return (
-          <li
+          <List.Item
             key={index}
             className={`react-media-library__file-library__list__item ${
               isSelected && "is-selected"
@@ -102,13 +101,13 @@ const FileLibrary: React.FC = (): ReactElement => {
             onClick={() => onSelect(element)}
           >
             {libraryCardComponent?.(element)}
-          </li>
+          </List.Item>
         );
       });
   }
 
   return (
-    <div
+    <Layout
       className={`react-media-library__file-library ${
         selectedItems.length > 0 && "has-selected"
       }`}
@@ -119,51 +118,54 @@ const FileLibrary: React.FC = (): ReactElement => {
         </div>
       )}
 
-      <div className="react-media-library__file-library__row">
-        <div className="react-media-library__file-library__main">
+      <Layout>
+        <Content>
           {fileLibraryList?.length ? (
-            <ul className="react-media-library__file-library__list">
-              {renderList()}
-            </ul>
+            <List
+              grid={{ gutter: 16, column: 4 }}
+              dataSource={fileLibraryListSorted.slice(
+                (page - 1) * itemsPerPage,
+                page * itemsPerPage
+              )}
+              renderItem={(item) => (
+                <List.Item onClick={() => onSelect(item)}>
+                  {libraryCardComponent?.(item)}
+                </List.Item>
+              )}
+            />
           ) : (
-            <p className="react-media-library__file-library__empty">
-              No files available. Please upload a file.
-            </p>
+            <Empty description="No files available. Please upload a file." />
           )}
 
-          <div className="react-media-library__file-library__footer">
-            {fileLibraryList?.length > itemsPerPage && (
-              <FileLibraryPager
-                count={fileLibraryList.length}
-                page={page}
-                pagerCallback={(number: number) => setPage(number)}
-                itemsPerPage={itemsPerPage}
-              />
+          {fileLibraryList?.length > itemsPerPage && (
+            <FileLibraryPager
+              count={fileLibraryList.length}
+              page={page}
+              pagerCallback={(number: number) => setPage(number)}
+              itemsPerPage={itemsPerPage}
+            />
+          )}
+
+          {selectedItems.length === 0 &&
+            defaultSelectedItemIds &&
+            defaultSelectedItemIds.length > 0 && (
+              <div className="react-media-library__file-library__footer__actions">
+                <Button
+                  type="default"
+                  onClick={() => filesSelectCallback && filesSelectCallback([])}
+                >
+                  Deselect File
+                  {defaultSelectedItemIds.length > 1 ? "s" : ""}
+                </Button>
+              </div>
             )}
+        </Content>
 
-            {/** If nothing is selected but something was default selected, then show a deselect button. **/}
-            {selectedItems.length === 0 &&
-              defaultSelectedItemIds &&
-              defaultSelectedItemIds.length > 0 && (
-                <div className="react-media-library__file-library__footer__actions">
-                  <button
-                    type="button"
-                    className="react-media-library__file-library__footer__actions__deselect"
-                    onClick={() =>
-                      filesSelectCallback && filesSelectCallback([])
-                    }
-                  >
-                    Deselect File{defaultSelectedItemIds.length > 1 ? "s" : ""}
-                  </button>
-                </div>
-              )}
-          </div>
-        </div>
-
-        {/** If something is selected, show the selected items component. **/}
-        {selectedItems.length > 0 && selectedItemsComponent?.()}
-      </div>
-    </div>
+        {selectedItems.length > 0 && (
+          <Sider width={300}>{selectedItemsComponent?.()}</Sider>
+        )}
+      </Layout>
+    </Layout>
   );
 };
 

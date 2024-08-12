@@ -23,11 +23,15 @@ export default [
     ],
     plugins: [
       resolve(),
-      commonjs(),
+      commonjs({
+        include: "node_modules/**",
+        ignoreGlobal: true, // Bỏ qua các biến toàn cầu không xử lý được
+        sourceMap: false, // Nếu bạn không cần sourcemap, có thể tắt nó
+      }),
       typescript({ tsconfig: "./tsconfig.json" }),
       terser(),
       postcss({
-        extensions: ['.scss'],
+        extensions: [".scss"],
         inject: true,
         minimize: true,
       }),
