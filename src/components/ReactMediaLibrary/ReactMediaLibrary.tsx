@@ -70,7 +70,7 @@ const ReactMediaLibrary: React.FC<ReactMediaLibraryProps> = ({
         defaultSelectedItemIds: filterDefaultSelected.map((item) => item._id),
       }}
     >
-      <div className="cani-react-media-library" onClick={handleModalOnClick}>
+      <div className="react-media-library" onClick={handleModalOnClick}>
         <div className="react-media-library__modal">
           <div className="react-media-library__modal__header">
             <h2 className="react-media-library__modal__header__title">
