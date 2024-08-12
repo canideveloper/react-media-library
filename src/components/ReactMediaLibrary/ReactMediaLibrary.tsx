@@ -1,12 +1,9 @@
 import React, { MouseEvent, ReactElement, useEffect, useState } from "react";
-import { Modal, Button, Typography } from "antd";
 import ReactMediaLibraryTabs from "../ReactMediaLibraryTabs/ReactMediaLibraryTabs";
 import { FileLibraryListItem, ReactMediaLibraryProps } from "../../../types";
 import { ReactMediaLibraryContext } from "../../context/ReactMediaLibraryContext";
 import FileLibraryCard from "../FileLibraryCard/FileLibraryCard";
 import { FileLibrarySelectedItems } from "../FileLibrarySelectedItems";
-
-const { Title } = Typography;
 
 const ReactMediaLibrary: React.FC<ReactMediaLibraryProps> = ({
   defaultSelectedItemIds,
@@ -30,10 +27,12 @@ const ReactMediaLibrary: React.FC<ReactMediaLibraryProps> = ({
     Array<FileLibraryListItem>
   >([]);
   const filterDefaultSelected = fileLibraryList.filter((item) =>
-    defaultSelectedItemIds?.includes(item.id)
+    defaultSelectedItemIds?.includes(item._id)
   );
 
   useEffect(() => {
+    // Asset loads are sometimes async.
+    // Need to check the default and reselect if either the file library list or default select list is updated.
     if (defaultSelectedItemIds?.length) {
       setSelectedItems(filterDefaultSelected);
     } else {
@@ -41,8 +40,14 @@ const ReactMediaLibrary: React.FC<ReactMediaLibraryProps> = ({
     }
   }, [fileLibraryList, defaultSelectedItemIds]);
 
+  function handleModalOnClick(e: MouseEvent) {
+    // Prevent event propagation on child elements
+    if (e.currentTarget != e.target) return;
+    onClose();
+  }
+
   if (!isOpen) {
-    return <></>;
+    return <React.Fragment />;
   }
 
   return (
@@ -62,17 +67,26 @@ const ReactMediaLibrary: React.FC<ReactMediaLibraryProps> = ({
         sortProperty: sortProperty,
         sortAscending: sortAscending,
         acceptedTypes: acceptedTypes,
-        defaultSelectedItemIds: filterDefaultSelected.map((item) => item.id),
+        defaultSelectedItemIds: filterDefaultSelected.map((item) => item._id),
       }}
     >
-      <Modal
-        title={modalTitle}
-        visible={isOpen}
-        onCancel={onClose}
-        footer={null}
-      >
-        <ReactMediaLibraryTabs />
-      </Modal>
+      <div className="react-media-library" onClick={handleModalOnClick}>
+        <div className="react-media-library__modal">
+          <div className="react-media-library__modal__header">
+            <h2 className="react-media-library__modal__header__title">
+              {modalTitle}
+            </h2>
+            <div className="react-media-library__modal__header__close">
+              <button type="button" onClick={onClose}>
+                <span className="icon-close" />
+              </button>
+            </div>
+          </div>
+          <div className="react-media-library__modal__body">
+            <ReactMediaLibraryTabs />
+          </div>
+        </div>
+      </div>
     </ReactMediaLibraryContext.Provider>
   );
 };

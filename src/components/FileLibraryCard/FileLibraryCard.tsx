@@ -1,11 +1,8 @@
 import React, { ReactElement, useContext } from "react";
-import { Card, Typography, Image } from "antd";
 import formatBytes from "../../utils/formatBytes";
 import formatDate from "../../utils/formatDate";
 import { FileLibraryListItem } from "../../../types";
 import { ReactMediaLibraryContext } from "../../context/ReactMediaLibraryContext";
-
-const { Text } = Typography;
 
 const FileLibraryCard: React.FC<FileLibraryListItem> = (
   props: FileLibraryListItem
@@ -16,40 +13,41 @@ const FileLibraryCard: React.FC<FileLibraryListItem> = (
   );
 
   return (
-    <Card
-      hoverable
+    <div
       className={`react-media-library__file-library-card ${
         isSelected && "is-active"
       }`}
-      cover={
-        props.thumbnail_url && (
-          <Image
-            className="react-media-library__file-library-card__image"
-            src={props.thumbnail_url}
-            alt={props.filename}
-            preview={false}
-          />
-        )
-      }
     >
+      {props.thumbnail_url && (
+        <img
+          className="react-media-library__file-library-card__image"
+          src={props.thumbnail_url}
+          alt={props.filename}
+        />
+      )}
+      {props.filename && (
+        <h4 className="react-media-library__file-library-card__title">
+          {props.filename}
+        </h4>
+      )}
       <ul className="react-media-library__file-library-card__list">
         {props.original_filename && (
           <li className="react-media-library__file-library-card__list__item">
-            <Text>{props.original_filename}</Text>
+            {props.original_filename}
           </li>
         )}
         {props.size && (
           <li className="react-media-library__file-library-card__list__item">
-            <Text>{formatBytes(props.size)}</Text>
+            {formatBytes(props.size)}
           </li>
         )}
-        {props.createdAt && (
+        {/* {props.createdAt && (
           <li className="react-media-library__file-library-card__list__item">
-            <Text>{formatDate(props.createdAt)}</Text>
+            {formatDate(props.createdAt)}
           </li>
-        )}
+        )} */}
       </ul>
-    </Card>
+    </div>
   );
 };
 
