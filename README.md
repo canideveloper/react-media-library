@@ -15,7 +15,7 @@ Note: this only includes the UI; everybody's app is different, so I can't write 
 Install it via npm in your project.
 
 ```
-npm install react-media-library --save
+npm install cani-react-media-library --save
 ```
 
 ## Documentation / Examples

@@ -67,7 +67,7 @@ const ReactMediaLibrary: React.FC<ReactMediaLibraryProps> = ({
 			}}
 		>
 			<div
-				className="react-media-library"
+				className="cani-react-media-library"
 				onClick={handleModalOnClick}
 			>
 				<div className="react-media-library__modal">

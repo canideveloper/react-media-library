@@ -1,5 +1,5 @@
 {
-  "name": "react-media-library",
+  "name": "cani-react-media-library",
   "version": "2.0.3",
   "description": "React Media Library is a UI package similar to the WordPress media library, but for React. It features file drag-and-drop as well as a library to select previously uploaded files.",
   "homepage": "https://github.com/Richard1320/React-Media-Library",
