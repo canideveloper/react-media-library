@@ -27,7 +27,7 @@ export default [
       typescript({ tsconfig: "./tsconfig.json" }),
       terser(),
       postcss({
-        extensions: ['.scss'],
+        extensions: [".scss"],
         inject: true,
         minimize: true,
       }),
