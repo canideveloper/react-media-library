@@ -23,7 +23,7 @@ const FileLibrary: React.FC = (): ReactElement => {
   const itemsPerPage = 12;
   const firstItemIndex = defaultSelectedItemIds?.length
     ? fileLibraryListSorted.findIndex(
-        (item) => item._id === defaultSelectedItemIds[0]
+        (item) => item.id === defaultSelectedItemIds[0]
       )
     : 0;
   const initialPage = Math.ceil((firstItemIndex + 1) / itemsPerPage);
@@ -53,7 +53,7 @@ const FileLibrary: React.FC = (): ReactElement => {
 
   function onSelect(item: FileLibraryListItem) {
     const foundIndex = selectedItems.findIndex(
-      (element) => element._id === item._id
+      (element) => element.id === item.id
     );
     if (multiSelect) {
       const newSelectedItems = [...selectedItems];
@@ -91,7 +91,7 @@ const FileLibrary: React.FC = (): ReactElement => {
       .slice(arrayStart, arrayEnd)
       .map((element: FileLibraryListItem, index: number) => {
         const isSelected: boolean = !!selectedItems.find(
-          (item) => item._id === element._id
+          (item) => item.id === element.id
         );
         return (
           <li
