@@ -186,7 +186,9 @@
           margin-bottom: 0;
         }
         @include media-breakpoint-up(lg) {
-          width: calc(33.33% - (2rem / 3));
+          width: calc(
+            25% - (3rem / 4)
+          ); // Chỉnh sửa ở đây để hiển thị 4 item trên mỗi hàng
         }
       }
     }

@@ -48,3 +48,12 @@ export interface FileLibraryProps {
   /** Default item(s) to be selected if ID is provided. **/
   defaultSelectedItemIds?: Array<string | number>;
 }
+
+// export interface FileLibraryPaginationProps {
+//     /** Pagination object to render. **/
+//     pagination: FileLibraryPagination;
+//     /** Function that gets called when the user clicks on a page number. **/
+//     onPageChange: (page: number) => void;
+//     onItemsPerPageChange: (itemsPerPage: number) => void;
+//
+// }

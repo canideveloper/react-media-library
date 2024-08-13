@@ -8,6 +8,7 @@ const FileLibraryPager: React.FC<FileLibraryPagerProps> = ({
 	page,
 	pagerCallback
 }: FileLibraryPagerProps): ReactElement => {
+	console.log("FileLibraryPagerProps", count, itemsPerPage, offsetDisplay, page, pagerCallback);
 
 	function renderLinks(): ReactElement[] {
 		const links = [];

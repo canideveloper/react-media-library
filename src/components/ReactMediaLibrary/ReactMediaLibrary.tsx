@@ -83,7 +83,7 @@ const ReactMediaLibrary: React.FC<ReactMediaLibraryProps> = ({
             </div>
           </div>
           <div className="react-media-library__modal__body">
-            <ReactMediaLibraryTabs />
+            <ReactMediaLibraryTabs total={0} last_page={0} current_page={0} per_page={0} />
           </div>
         </div>
       </div>

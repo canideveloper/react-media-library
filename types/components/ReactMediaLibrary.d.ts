@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {FileUploadProps} from "./FileUpload";
-import {FileLibraryListItem, FileLibraryProps} from "./FileLibrary";
+import {FileLibraryListItem, FileLibraryPagination, FileLibraryProps} from "./FileLibrary";
 import {Dispatch, SetStateAction} from "react";
 
 export type ReactMediaLibraryContextType = FileUploadProps & FileLibraryProps & {
@@ -8,7 +8,7 @@ export type ReactMediaLibraryContextType = FileUploadProps & FileLibraryProps & 
 	setSelectedItems: Dispatch<SetStateAction<Array<FileLibraryListItem>>>;
 };
 
-export interface ReactMediaLibraryProps extends FileUploadProps, FileLibraryProps {
+export interface ReactMediaLibraryProps extends FileUploadProps, FileLibraryProps, FileLibraryPagination {
 	/** Control to show or hide the modal. **/
 	isOpen: boolean;
 	/** Function that gets called when the user clicks on the close button on the top right or gray overlay background. **/

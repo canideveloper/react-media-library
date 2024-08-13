@@ -2,8 +2,9 @@ import React, { ReactElement, useContext, useMemo, useState } from "react";
 import FileLibraryPager from "../FileLibraryPager/FileLibraryPager";
 import { FileLibraryListItem } from "../../../types";
 import { ReactMediaLibraryContext } from "../../context/ReactMediaLibraryContext";
+import {FileLibraryPagination} from "../../../types/components/FileLibrary";
 
-const FileLibrary: React.FC = (): ReactElement => {
+const FileLibrary: React.FC<FileLibraryPagination> = ({per_page,last_page,current_page,total}): ReactElement => {
   const {
     selectedItems,
     setSelectedItems,
@@ -134,10 +135,10 @@ const FileLibrary: React.FC = (): ReactElement => {
           <div className="react-media-library__file-library__footer">
             {fileLibraryList?.length > itemsPerPage && (
               <FileLibraryPager
-                count={fileLibraryList.length}
-                page={page}
+                count={total}
+                page={current_page}
                 pagerCallback={(number: number) => setPage(number)}
-                itemsPerPage={itemsPerPage}
+                itemsPerPage={per_page}
               />
             )}
 
