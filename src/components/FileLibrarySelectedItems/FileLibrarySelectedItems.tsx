@@ -1,51 +1,41 @@
-import React, { ReactElement, useContext } from "react";
-import { ReactMediaLibraryContext } from "../../context/ReactMediaLibraryContext";
-import { FileLibrarySelectedItemsCard } from "../FileLibrarySelectedItemsCard";
-import { FileLibrarySelectedItemsProps } from "../../../types";
+import React, { useContext } from 'react';
+import { ReactMediaLibraryContext } from '../../context/ReactMediaLibraryContext';
+import { FileLibrarySelectedItemsProps } from '../../../types';
+import { List, Card, Button } from 'antd';
 
 const FileLibrarySelectedItems: React.FC<FileLibrarySelectedItemsProps> = ({
-  itemComponent = (item) => <FileLibrarySelectedItemsCard {...item} />,
-}: FileLibrarySelectedItemsProps): ReactElement => {
-  const { selectedItems, filesSelectCallback, filesDeleteCallback } =
-    useContext(ReactMediaLibraryContext);
+                                                                               itemComponent = (item) => (
+                                                                                   <Card hoverable style={{ width: 240 }} cover={<img alt="example" src={item.thumbnailUrl} />}>
+                                                                                       <Card.Meta title={item.title} description={item.description} />
+                                                                                   </Card>
+                                                                               ),
+                                                                           }: FileLibrarySelectedItemsProps) => {
+    const { selectedItems, filesSelectCallback, filesDeleteCallback } =
+        useContext(ReactMediaLibraryContext);
 
-  return (
-    <div className="react-media-library__file-library-selected-items">
-      <ul className="react-media-library__file-library-selected-items__list">
-        {selectedItems.map((item) => (
-          <li
-            key={`item-${item._id}`}
-            className="react-media-library__file-library-selected-items__list__item"
-          >
-            {itemComponent?.(item)}
-          </li>
-        ))}
-      </ul>
-
-      <div className="react-media-library__file-library-selected-items__actions">
-        {filesDeleteCallback !== undefined && (
-          <button
-            type="button"
-            className="react-media-library__file-library-selected-items__actions__delete"
-            onClick={() => filesDeleteCallback?.(selectedItems)}
-          >
-            Delete {selectedItems.length > 1 ? selectedItems.length : ""} File
-            {selectedItems.length > 1 ? "s" : ""}
-          </button>
-        )}
-        <button
-          type="button"
-          className="react-media-library__file-library-selected-items__actions__select"
-          onClick={() =>
-            filesSelectCallback && filesSelectCallback(selectedItems)
-          }
-        >
-          Select {selectedItems.length > 1 ? selectedItems.length : ""} File
-          {selectedItems.length > 1 ? "s" : ""}
-        </button>
-      </div>
-    </div>
-  );
+    return (
+        <div>
+            <List
+                grid={{ gutter: 16, column: 4 }}
+                dataSource={selectedItems}
+                renderItem={item => (
+                    <List.Item key={`item-${item._id}`}>
+                        {itemComponent(item)}
+                    </List.Item>
+                )}
+            />
+            <div style={{ marginTop: 16 }}>
+                {filesDeleteCallback !== undefined && (
+                    <Button danger onClick={() => filesDeleteCallback(selectedItems)}>
+                        Delete {selectedItems.length > 1 ? `${selectedItems.length} Files` : 'File'}
+                    </Button>
+                )}
+                <Button type="primary" onClick={() => filesSelectCallback && filesSelectCallback(selectedItems)} style={{ marginLeft: 8 }}>
+                    Select {selectedItems.length > 1 ? `${selectedItems.length} Files` : 'File'}
+                </Button>
+            </div>
+        </div>
+    );
 };
 
 export default FileLibrarySelectedItems;

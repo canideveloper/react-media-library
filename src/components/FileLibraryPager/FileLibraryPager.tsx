@@ -1,19 +1,18 @@
 import React, { ReactElement } from 'react';
 import { FileLibraryPagerProps } from "../../../types";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleDoubleLeft, faAngleLeft, faAngleRight, faAngleDoubleRight } from '@fortawesome/free-solid-svg-icons';
 
 const FileLibraryPager: React.FC<FileLibraryPagerProps> = ({
+
 															   itemsPerPage,
 															   total,
 															   page,
-															   pagerCallback,
-															   last_page
+															   pagerCallback
 														   }: FileLibraryPagerProps): ReactElement => {
 	console.log("FileLibraryPagerProps", itemsPerPage, total, page, pagerCallback);
 
-	// Offset determines how many pages are shown around the current page
 	const offset = 2;
-
-	// Total number of pages
 	const totalPages = Math.ceil(total / itemsPerPage);
 
 	function renderLinks(): ReactElement[] {
@@ -21,7 +20,6 @@ const FileLibraryPager: React.FC<FileLibraryPagerProps> = ({
 		const prevPage = page - 1;
 		const nextPage = page + 1;
 
-		// First page button
 		links.push(
 			<button
 				type="button"
@@ -30,11 +28,10 @@ const FileLibraryPager: React.FC<FileLibraryPagerProps> = ({
 				onClick={() => pagerCallback(1)}
 				disabled={page === 1}
 			>
-				&lt;&lt;
+				<FontAwesomeIcon icon={faAngleDoubleLeft} />
 			</button>
 		);
 
-		// Previous page button
 		links.push(
 			<button
 				type="button"
@@ -43,11 +40,10 @@ const FileLibraryPager: React.FC<FileLibraryPagerProps> = ({
 				onClick={() => pagerCallback(prevPage)}
 				disabled={page === 1}
 			>
-				&lt;
+				<FontAwesomeIcon icon={faAngleLeft} />
 			</button>
 		);
 
-		// Loop to show links to a range of pages around the current page
 		for (let number = page - offset; number <= page + offset; number++) {
 			if (number > 0 && number <= totalPages) {
 				links.push(
@@ -63,7 +59,6 @@ const FileLibraryPager: React.FC<FileLibraryPagerProps> = ({
 			}
 		}
 
-		// Next page button
 		links.push(
 			<button
 				type="button"
@@ -72,11 +67,10 @@ const FileLibraryPager: React.FC<FileLibraryPagerProps> = ({
 				onClick={() => pagerCallback(nextPage)}
 				disabled={page === totalPages}
 			>
-				&gt;
+				<FontAwesomeIcon icon={faAngleRight} />
 			</button>
 		);
 
-		// Last page button
 		links.push(
 			<button
 				type="button"
@@ -85,7 +79,7 @@ const FileLibraryPager: React.FC<FileLibraryPagerProps> = ({
 				onClick={() => pagerCallback(totalPages)}
 				disabled={page === totalPages}
 			>
-				&gt;&gt;
+				<FontAwesomeIcon icon={faAngleDoubleRight} />
 			</button>
 		);
 

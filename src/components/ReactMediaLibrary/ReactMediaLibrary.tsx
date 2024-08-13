@@ -89,6 +89,7 @@ const ReactMediaLibrary: React.FC<ReactMediaLibraryProps> = ({
           </div>
           <div className="react-media-library__modal__body">
             <ReactMediaLibraryTabs />
+
               <FileLibraryPager total={total} page={page} itemsPerPage={itemsPerPage} pagerCallback={pagerCallback}/>
           </div>
         </div>
