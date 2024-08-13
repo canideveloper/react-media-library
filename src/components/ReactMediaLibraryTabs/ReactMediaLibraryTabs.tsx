@@ -1,11 +1,8 @@
 import React, { useContext, useState } from "react";
-import { Tabs } from 'antd';
+import { Tabs, TabsProps } from 'antd';
 import FileUpload from "../FileUpload/FileUpload";
 import FileLibrary from "../FileLibrary/FileLibrary";
 import { ReactMediaLibraryContext } from "../../context/ReactMediaLibraryContext";
-// import 'antd/dist/antd.css'; // Importing Ant Design styles
-
-const { TabPane } = Tabs;
 
 const ReactMediaLibraryTabs: React.FC = () => {
 	const {
@@ -20,24 +17,32 @@ const ReactMediaLibraryTabs: React.FC = () => {
 		}
 	};
 
+	// Construct the tabs items here, filtering out undefined entries immediately
+	const tabsItems: TabsProps['items'] = []; // Explicitly define the type to match expected type
+
+	if (filesSelectCallback) {
+		tabsItems.push({
+			label: "Browse Files",
+			key: "browse",
+			children: <FileLibrary />
+		});
+	}
+	if (fileUploadCallback) {
+		tabsItems.push({
+			label: "Upload File",
+			key: "upload",
+			children: <FileUpload />
+		});
+	}
+
 	return (
 		<Tabs
 			defaultActiveKey={currentTab}
 			onChange={handleTabChange}
 			type="card"
 			className="react-media-library__tabs"
-		>
-			{filesSelectCallback && (
-				<TabPane tab="Browse Files" key="browse">
-					<FileLibrary />
-				</TabPane>
-			)}
-			{fileUploadCallback && (
-				<TabPane tab="Upload File" key="upload">
-					<FileUpload />
-				</TabPane>
-			)}
-		</Tabs>
+			items={tabsItems}
+		/>
 	);
 };
 
