@@ -4,7 +4,7 @@ import FileLibrary from "../FileLibrary/FileLibrary";
 import {ReactMediaLibraryContext} from "../../context/ReactMediaLibraryContext";
 import {FileLibraryPagination} from "../../../types/components/FileLibrary";
 
-const ReactMediaLibraryTabs: React.FC<FileLibraryPagination> = ({current_page,last_page,total,per_page}): ReactElement => {
+const ReactMediaLibraryTabs: React.FC = (): ReactElement => {
 	const {
 		fileUploadCallback,
 		filesSelectCallback
@@ -42,7 +42,7 @@ const ReactMediaLibraryTabs: React.FC<FileLibraryPagination> = ({current_page,la
 			</div>
 			{(currentTab === "browse") ? (
 				<div className="react-media-library__tabs__item">
-					<FileLibrary last_page={last_page} current_page={current_page} total={total} per_page={per_page}/>
+					<FileLibrary/>
 				</div>
 			) : (
 				<div className="react-media-library__tabs__item">

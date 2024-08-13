@@ -4,6 +4,7 @@ import { FileLibraryListItem, ReactMediaLibraryProps } from "../../../types";
 import { ReactMediaLibraryContext } from "../../context/ReactMediaLibraryContext";
 import FileLibraryCard from "../FileLibraryCard/FileLibraryCard";
 import { FileLibrarySelectedItems } from "../FileLibrarySelectedItems";
+import {FileLibraryPager} from "../FileLibraryPager";
 
 const ReactMediaLibrary: React.FC<ReactMediaLibraryProps> = ({
   defaultSelectedItemIds,
@@ -83,7 +84,8 @@ const ReactMediaLibrary: React.FC<ReactMediaLibraryProps> = ({
             </div>
           </div>
           <div className="react-media-library__modal__body">
-            <ReactMediaLibraryTabs total={0} last_page={0} current_page={0} per_page={0} />
+            <ReactMediaLibraryTabs />
+              <FileLibraryPager total={fileLibraryList.length} page={1} itemsPerPage={10} pagerCallback={() => {}}/>
           </div>
         </div>
       </div>

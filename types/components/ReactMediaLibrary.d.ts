@@ -8,7 +8,7 @@ export type ReactMediaLibraryContextType = FileUploadProps & FileLibraryProps & 
 	setSelectedItems: Dispatch<SetStateAction<Array<FileLibraryListItem>>>;
 };
 
-export interface ReactMediaLibraryProps extends FileUploadProps, FileLibraryProps, FileLibraryPagination {
+export interface ReactMediaLibraryProps extends FileUploadProps, FileLibraryProps {
 	/** Control to show or hide the modal. **/
 	isOpen: boolean;
 	/** Function that gets called when the user clicks on the close button on the top right or gray overlay background. **/
