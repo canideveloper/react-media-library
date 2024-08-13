@@ -10,7 +10,7 @@ const FileLibraryPager: React.FC<FileLibraryPagerProps> = ({
 															   page,
 															   pagerCallback
 														   }: FileLibraryPagerProps): ReactElement => {
-	console.log("FileLibraryPagerProps", itemsPerPage, total, page, pagerCallback);
+	// console.log("FileLibraryPagerProps", itemsPerPage, total, page, pagerCallback);
 
 	const offset = 2;
 	const totalPages = Math.ceil(total / itemsPerPage);
