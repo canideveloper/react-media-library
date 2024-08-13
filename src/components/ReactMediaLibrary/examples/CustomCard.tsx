@@ -7,7 +7,7 @@ import {useArgs} from "@storybook/preview-api";
 
 const CustomLibraryCard: React.FC<FileLibraryListItem> = (props: FileLibraryListItem): ReactElement => {
 	const {selectedItems} = useContext(ReactMediaLibraryContext);
-	const isSelected: boolean = !!selectedItems.find((element) => element._id === props._id);
+	const isSelected: boolean = !!selectedItems.find((element) => element.id === props.id);
 
 	return (
 		<div

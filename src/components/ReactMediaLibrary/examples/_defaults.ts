@@ -8,15 +8,17 @@ import {FileUploadStatus} from "../../FileUploadResult/FileUploadResult";
 export type ReactMediaLibraryStory = StoryObj<typeof ReactMediaLibrary>;
 
 export const storiesDefaultPrimaryArgs: ReactMediaLibraryProps = {
+	itemsPerPage: 0, page: 0, pagerCallback(number: number): void {
+	}, total: 0,
 	multiSelect: false,
 	isOpen: true,
 	onClose: () => {
 	},
 	fileUploadCallback: storiesDefaultFileUploadCallback,
 	fileLibraryList: storiesDefaultFileLibraryList,
-	filesSelectCallback: (items) => alert(`Selected items ${items.map(i => i._id).join(", ")}`),
-	filesDeleteCallback: (items) => alert(`Deleted items ${items.map(i => i._id).join(", ")}`),
-	finishUploadCallback: (uploadFiles) => alert(`Uploaded ${uploadFiles.filter(f => f.status === FileUploadStatus.SUCCESS).length}/${uploadFiles.length} files!`),
+	filesSelectCallback: (items) => alert(`Selected items ${items.map(i => i.id).join(", ")}`),
+	filesDeleteCallback: (items) => alert(`Deleted items ${items.map(i => i.id).join(", ")}`),
+	finishUploadCallback: (uploadFiles) => alert(`Uploaded ${uploadFiles.filter(f => f.status === FileUploadStatus.SUCCESS).length}/${uploadFiles.length} files!`)
 };
 
 async function storiesDefaultFileUploadCallback(file: File): Promise<boolean> {

@@ -12,7 +12,7 @@ const FileLibrarySelectedItemsCard: React.FC<FileLibraryListItem> = (
   function onRemove() {
     const newSelectedItems = [...selectedItems];
     const foundIndex = newSelectedItems.findIndex(
-      (element) => element._id === props._id
+      (element) => element.id === props.id
     );
     if (foundIndex > -1) {
       newSelectedItems.splice(foundIndex, 1);

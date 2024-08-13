@@ -32,7 +32,7 @@ const ReactMediaLibrary: React.FC<ReactMediaLibraryProps> = ({
     Array<FileLibraryListItem>
   >([]);
   const filterDefaultSelected = fileLibraryList.filter((item) =>
-    defaultSelectedItemIds?.includes(item._id)
+    defaultSelectedItemIds?.includes(item.id)
   );
 
   useEffect(() => {
@@ -72,7 +72,7 @@ const ReactMediaLibrary: React.FC<ReactMediaLibraryProps> = ({
         sortProperty: sortProperty,
         sortAscending: sortAscending,
         acceptedTypes: acceptedTypes,
-        defaultSelectedItemIds: filterDefaultSelected.map((item) => item._id),
+        defaultSelectedItemIds: filterDefaultSelected.map((item) => item.id),
       }}
     >
       <div className="react-media-library" onClick={handleModalOnClick}>

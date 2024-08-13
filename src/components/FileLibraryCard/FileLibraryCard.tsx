@@ -12,7 +12,7 @@ const FileLibraryCard: React.FC<FileLibraryListItem> = (
 ): ReactElement => {
   const { selectedItems } = useContext(ReactMediaLibraryContext);
   const isSelected: boolean = !!selectedItems?.find(
-      (element) => element._id === props._id
+      (element) => element.id === props.id
   );
 
   return (

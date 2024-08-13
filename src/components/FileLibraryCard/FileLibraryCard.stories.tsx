@@ -24,7 +24,7 @@ export const Primary: Story = (args: FileLibraryListItem) => (
 	</div>
 );
 Primary.args = {
-	_id: "primary",
+	id: 1,
 	title: "Primary Image",
 	size: 1575684,
 	createdAt: new Date(),

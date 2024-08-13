@@ -8,7 +8,6 @@ describe("Running Test for FileLibraryCard", () => {
   test("Check title is displaying", () => {
     render(
       <FileLibraryCard
-        _id={"primary"}
         title={"My custom title"}
         size={1575684}
         createdAt={new Date()}
