@@ -23,6 +23,10 @@ const ReactMediaLibrary: React.FC<ReactMediaLibraryProps> = ({
   filesSelectCallback,
   filesDeleteCallback,
   topBarComponent,
+    total,
+    page,
+    itemsPerPage,
+    pagerCallback
 }: ReactMediaLibraryProps): ReactElement => {
   const [selectedItems, setSelectedItems] = useState<
     Array<FileLibraryListItem>
@@ -85,7 +89,7 @@ const ReactMediaLibrary: React.FC<ReactMediaLibraryProps> = ({
           </div>
           <div className="react-media-library__modal__body">
             <ReactMediaLibraryTabs />
-              <FileLibraryPager total={fileLibraryList.length} page={1} itemsPerPage={10} pagerCallback={() => {}}/>
+              <FileLibraryPager total={total} page={page} itemsPerPage={itemsPerPage} pagerCallback={pagerCallback}/>
           </div>
         </div>
       </div>
