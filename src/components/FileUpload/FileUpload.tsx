@@ -17,8 +17,10 @@ const FileUpload: React.FC<FileUploadProps> = ({
   onBack,
 }): ReactElement => {
   const {
+    type,
     commonFileUploadCallback,
     personalFileUploadCallback,
+    materialFileUploadCallback,
     finishUploadCallback,
     acceptedTypes,
   } = useContext(ReactMediaLibraryContext);
@@ -55,10 +57,14 @@ const FileUpload: React.FC<FileUploadProps> = ({
     for (const index in acceptedFiles) {
       const file = acceptedFiles[index];
       let result = false;
-      if (module === "common" && commonFileUploadCallback) {
-        result = await commonFileUploadCallback(file);
-      } else if (personalFileUploadCallback) {
-        result = await personalFileUploadCallback(file);
+      if (type === "attachment") {
+        if (module === "common" && commonFileUploadCallback) {
+          result = await commonFileUploadCallback(file);
+        } else if (personalFileUploadCallback) {
+          result = await personalFileUploadCallback(file);
+        }
+      } else if (materialFileUploadCallback) {
+        result = await materialFileUploadCallback(file);
       }
       newFileUploadList = [...newFileUploadList];
       newFileUploadList[index].status = result

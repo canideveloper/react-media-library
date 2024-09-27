@@ -27,6 +27,10 @@ export interface FileLibraryPagination {
 }
 
 export interface FileLibraryProps {
+  type?: "attachment" | "material";
+
+  materialFileLibraryList?: Array<FileLibraryListItem>;
+
   /** Full list of items to render in the browse tab. **/
   fileLibraryList: Array<FileLibraryListItem>;
 

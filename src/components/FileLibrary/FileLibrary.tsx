@@ -6,7 +6,7 @@ import { FileLibraryPagination } from "../../../types/components/FileLibrary";
 import FileUpload from "../FileUpload/FileUpload"; // Import FileUpload component
 import { FaUpload } from "react-icons/fa";
 interface FileLibraryProps {
-  listType: "common" | "personal"; // Thêm props để chọn loại danh sách
+  listType: "common" | "personal" | "material";
 }
 
 const FileLibrary: React.FC<FileLibraryProps> = ({
@@ -18,6 +18,7 @@ const FileLibrary: React.FC<FileLibraryProps> = ({
     sortProperty,
     sortAscending,
     multiSelect,
+    materialFileLibraryList,
     commonFileLibraryList,
     personalFileLibraryList,
     defaultSelectedItemIds,
@@ -30,9 +31,16 @@ const FileLibrary: React.FC<FileLibraryProps> = ({
   const [isUploadVisible, setIsUploadVisible] = useState<boolean>(false); // State để hiển thị FileUpload
 
   // Lấy dữ liệu phù hợp dựa vào listType
-  const fileLibraryList =
-    listType === "common" ? commonFileLibraryList : personalFileLibraryList;
-
+  switch (listType) {
+    case "common":
+      var fileLibraryList = commonFileLibraryList;
+      break;
+    case "personal":
+      var fileLibraryList = personalFileLibraryList;
+      break;
+    default:
+      var fileLibraryList = materialFileLibraryList;
+  }
   const fileLibraryListSorted = useMemo(() => {
     if (fileLibraryList) {
       return [...fileLibraryList].sort(sortArray);

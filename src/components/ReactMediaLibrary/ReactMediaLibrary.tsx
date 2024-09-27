@@ -7,6 +7,7 @@ import { FileLibrarySelectedItems } from "../FileLibrarySelectedItems";
 import { FileLibraryPager } from "../FileLibraryPager";
 
 const ReactMediaLibrary: React.FC<ReactMediaLibraryProps> = ({
+  type,
   defaultSelectedItemIds,
   modalTitle = "Thư viện đa phương tiện",
   sortProperty = "created_at",
@@ -14,6 +15,7 @@ const ReactMediaLibrary: React.FC<ReactMediaLibraryProps> = ({
   isOpen = false,
   multiSelect = false,
   fileLibraryList = [],
+  materialFileLibraryList = [],
   commonFileLibraryList = [],
   personalFileLibraryList = [],
   libraryCardComponent = (item) => <FileLibraryCard {...item} />,
@@ -61,14 +63,17 @@ const ReactMediaLibrary: React.FC<ReactMediaLibraryProps> = ({
   return (
     <ReactMediaLibraryContext.Provider
       value={{
+        type: type,
         selectedItems: selectedItems,
         setSelectedItems: setSelectedItems,
         multiSelect: multiSelect,
         fileLibraryList: fileLibraryList,
+        materialFileLibraryList: materialFileLibraryList,
         commonFileLibraryList: commonFileLibraryList,
         personalFileLibraryList: personalFileLibraryList,
         commonFileUploadCallback: commonFileUploadCallback,
         personalFileUploadCallback: personalFileUploadCallback,
+        materialFileUploadCallback: personalFileUploadCallback,
         finishUploadCallback: finishUploadCallback,
         filesSelectCallback: filesSelectCallback,
         filesDeleteCallback: filesDeleteCallback,

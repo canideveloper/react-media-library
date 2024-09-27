@@ -5,14 +5,14 @@ import FileLibrary from "../FileLibrary/FileLibrary";
 import { ReactMediaLibraryContext } from "../../context/ReactMediaLibraryContext";
 
 const ReactMediaLibraryTabs: React.FC = () => {
-  const { filesSelectCallback } = useContext(ReactMediaLibraryContext);
+  const { type } = useContext(ReactMediaLibraryContext);
   const [currentTab, setCurrentTab] = useState<"common" | "personal">("common");
 
   const handleTabChange = (activeKey: string) => {
     setCurrentTab(activeKey as "common" | "personal");
   };
 
-  const tabsItems: TabsProps["items"] = [
+  const attachmentTabsItems: TabsProps["items"] = [
     {
       label: "Thư viện chung",
       key: "common",
@@ -22,6 +22,14 @@ const ReactMediaLibraryTabs: React.FC = () => {
       label: "Thư viện cá nhân",
       key: "personal",
       children: <FileLibrary listType="personal" />, // Sử dụng loại dữ liệu cá nhân
+    },
+  ];
+
+  const materialTabsItems: TabsProps["items"] = [
+    {
+      label: "Thư viện chung",
+      key: "material",
+      children: <FileLibrary listType="material" />, // Sử dụng loại dữ liệu chung
     },
   ];
 
@@ -39,7 +47,7 @@ const ReactMediaLibraryTabs: React.FC = () => {
       onChange={handleTabChange}
       type="card"
       className="react-media-library__tabs"
-      items={tabsItems}
+      items={type === "attachment" ? attachmentTabsItems : materialTabsItems}
     />
   );
 };
