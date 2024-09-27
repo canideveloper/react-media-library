@@ -4,29 +4,32 @@ import { FileLibraryListItem, ReactMediaLibraryProps } from "../../../types";
 import { ReactMediaLibraryContext } from "../../context/ReactMediaLibraryContext";
 import FileLibraryCard from "../FileLibraryCard/FileLibraryCard";
 import { FileLibrarySelectedItems } from "../FileLibrarySelectedItems";
-import {FileLibraryPager} from "../FileLibraryPager";
+import { FileLibraryPager } from "../FileLibraryPager";
 
 const ReactMediaLibrary: React.FC<ReactMediaLibraryProps> = ({
   defaultSelectedItemIds,
-  modalTitle = "Media Library",
+  modalTitle = "Thư viện đa phương tiện",
   sortProperty = "created_at",
   sortAscending = false,
   isOpen = false,
   multiSelect = false,
   fileLibraryList = [],
+  commonFileLibraryList = [],
+  personalFileLibraryList = [],
   libraryCardComponent = (item) => <FileLibraryCard {...item} />,
   selectedItemsComponent = () => <FileLibrarySelectedItems />,
   acceptedTypes = ["image/*", "video/*", "audio/*"],
   onClose,
-  fileUploadCallback,
+  commonFileUploadCallback,
+  personalFileUploadCallback,
   finishUploadCallback,
   filesSelectCallback,
   filesDeleteCallback,
   topBarComponent,
-    total,
-    page,
-    itemsPerPage,
-    pagerCallback
+  total,
+  page,
+  itemsPerPage,
+  pagerCallback,
 }: ReactMediaLibraryProps): ReactElement => {
   const [selectedItems, setSelectedItems] = useState<
     Array<FileLibraryListItem>
@@ -62,7 +65,10 @@ const ReactMediaLibrary: React.FC<ReactMediaLibraryProps> = ({
         setSelectedItems: setSelectedItems,
         multiSelect: multiSelect,
         fileLibraryList: fileLibraryList,
-        fileUploadCallback: fileUploadCallback,
+        commonFileLibraryList: commonFileLibraryList,
+        personalFileLibraryList: personalFileLibraryList,
+        commonFileUploadCallback: commonFileUploadCallback,
+        personalFileUploadCallback: personalFileUploadCallback,
         finishUploadCallback: finishUploadCallback,
         filesSelectCallback: filesSelectCallback,
         filesDeleteCallback: filesDeleteCallback,
@@ -90,7 +96,12 @@ const ReactMediaLibrary: React.FC<ReactMediaLibraryProps> = ({
           <div className="react-media-library__modal__body">
             <ReactMediaLibraryTabs />
 
-              <FileLibraryPager total={total} page={page} itemsPerPage={itemsPerPage} pagerCallback={pagerCallback}/>
+            <FileLibraryPager
+              total={total}
+              page={page}
+              itemsPerPage={itemsPerPage}
+              pagerCallback={pagerCallback}
+            />
           </div>
         </div>
       </div>

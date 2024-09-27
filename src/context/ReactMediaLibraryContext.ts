@@ -3,9 +3,12 @@ import { ReactMediaLibraryContextType } from "../../types";
 
 const reactMediaLibraryDefaultContext: ReactMediaLibraryContextType = {
   fileLibraryList: [],
+  commonFileLibraryList: [],
+  personalFileLibraryList: [],
   selectedItems: [],
   setSelectedItems: () => {},
-  fileUploadCallback: async () => false,
+  commonFileUploadCallback: async () => false,
+  personalFileUploadCallback: async () => false,
   filesSelectCallback: () => {},
   // sortProperty: "create",
   sortAscending: false,

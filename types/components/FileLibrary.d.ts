@@ -29,6 +29,13 @@ export interface FileLibraryPagination {
 export interface FileLibraryProps {
   /** Full list of items to render in the browse tab. **/
   fileLibraryList: Array<FileLibraryListItem>;
+
+  /** Full list of common items to render in the browse tab. **/
+  commonFileLibraryList?: Array<FileLibraryListItem>;
+
+  /** Full list of personal items to render in the browse tab. **/
+  personalFileLibraryList?: Array<FileLibraryListItem>;
+
   /** Property name to sort by. **/
   sortProperty?: "title" | "filename" | "size" | "created_at";
   /** Control to invert the sort selection. **/

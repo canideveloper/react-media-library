@@ -3,7 +3,10 @@ import ReactMediaLibrary from "../ReactMediaLibrary";
 import React, { useEffect, useState } from "react";
 import { ReactMediaLibraryStory, storiesDefaultPrimaryArgs } from "./_defaults";
 import { useArgs } from "@storybook/preview-api";
-import { storiesDefaultFileLibraryList } from "./_storiesDefaultFileLibraryList";
+import {
+  storiesDefaultCommonFileLibraryList,
+  storiesDefaultPersonalFileLibraryList,
+} from "./_storiesDefaultFileLibraryList";
 
 export const Primary: ReactMediaLibraryStory = (
   args: ReactMediaLibraryProps
@@ -11,6 +14,12 @@ export const Primary: ReactMediaLibraryStory = (
   const [fileLibraryList, setFileLibraryList] = useState<
     Array<FileLibraryListItem>
   >([]);
+  const [commonFileLibraryList, setCommonFileLibraryList] = useState<
+    Array<FileLibraryListItem>
+  >(storiesDefaultCommonFileLibraryList); // Khởi tạo với dữ liệu mặc định
+  const [personalFileLibraryList, setPersonalFileLibraryList] = useState<
+    Array<FileLibraryListItem>
+  >(storiesDefaultPersonalFileLibraryList); // Khởi tạo với dữ liệu mặc định
   const [myChosenItem, setMyChosenItem] = useState<FileLibraryListItem>();
   const [{ isOpen }, updateArgs] = useArgs<ReactMediaLibraryProps>();
 
@@ -20,12 +29,17 @@ export const Primary: ReactMediaLibraryStory = (
 
   /** Simulate async loading of assets. **/
   async function fetchAssets(): Promise<void> {
-    const myRandomItem: FileLibraryListItem =
-      storiesDefaultFileLibraryList[
-        Math.floor(Math.random() * args.fileLibraryList.length)
-      ];
-    setFileLibraryList(storiesDefaultFileLibraryList);
-    setMyChosenItem(myRandomItem);
+    // Dữ liệu đã được gán sẵn từ mảng mặc định, không cần phải tải lại từ fetch
+    // Bạn có thể thay đổi dữ liệu nếu cần tải từ API hoặc nguồn khác
+
+    // Chọn ngẫu nhiên một item từ danh sách chung
+    if (commonFileLibraryList.length > 0) {
+      const myRandomItem: FileLibraryListItem =
+        commonFileLibraryList[
+          Math.floor(Math.random() * commonFileLibraryList.length)
+        ];
+      setMyChosenItem(myRandomItem);
+    }
   }
 
   return (
@@ -67,7 +81,9 @@ export const Primary: ReactMediaLibraryStory = (
         {...args}
         isOpen={isOpen}
         onClose={() => updateArgs({ isOpen: false })}
-        fileLibraryList={fileLibraryList}
+        fileLibraryList={fileLibraryList} // Tổng hợp cả hai loại file
+        commonFileLibraryList={commonFileLibraryList} // Danh sách file "Chung"
+        personalFileLibraryList={personalFileLibraryList} // Danh sách file "Cá nhân"
         defaultSelectedItemIds={[myChosenItem?.id || ""]}
         filesSelectCallback={(items) => {
           setMyChosenItem(items[0]);
@@ -77,8 +93,11 @@ export const Primary: ReactMediaLibraryStory = (
     </React.Fragment>
   );
 };
+
 Primary.args = {
   ...storiesDefaultPrimaryArgs,
   isOpen: false,
-  fileLibraryList: [],
+  fileLibraryList: [], // Dữ liệu sẽ được tải và phân loại trong hàm fetchAssets nếu cần
+  commonFileLibraryList: storiesDefaultCommonFileLibraryList, // Truyền dữ liệu "Chung"
+  personalFileLibraryList: storiesDefaultPersonalFileLibraryList, // Truyền dữ liệu "Cá nhân"
 };

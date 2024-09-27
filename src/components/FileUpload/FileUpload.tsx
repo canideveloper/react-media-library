@@ -5,13 +5,27 @@ import FileUploadResult, {
 } from "../FileUploadResult/FileUploadResult";
 import { FileUploadListItem } from "../../../types";
 import { ReactMediaLibraryContext } from "../../context/ReactMediaLibraryContext";
+import { FaArrowLeft, FaUpload } from "react-icons/fa";
 
-const FileUpload: React.FC = (): ReactElement => {
-  const { fileUploadCallback, finishUploadCallback, acceptedTypes } =
-    useContext(ReactMediaLibraryContext);
+interface FileUploadProps {
+  module: string; // Module của file
+  onBack: () => void; // Prop để xử lý sự kiện Back
+}
+
+const FileUpload: React.FC<FileUploadProps> = ({
+  module,
+  onBack,
+}): ReactElement => {
+  const {
+    commonFileUploadCallback,
+    personalFileUploadCallback,
+    finishUploadCallback,
+    acceptedTypes,
+  } = useContext(ReactMediaLibraryContext);
   const [fileUploadList, setFileUploadList] = useState<
     Array<FileUploadListItem>
   >([]);
+
   const dropzoneOptions: DropzoneOptions = {
     onDrop,
   };
@@ -40,14 +54,17 @@ const FileUpload: React.FC = (): ReactElement => {
     // Loop through new upload items
     for (const index in acceptedFiles) {
       const file = acceptedFiles[index];
-      if (fileUploadCallback) {
-        const result: boolean = await fileUploadCallback(file);
-        newFileUploadList = [...newFileUploadList];
-        newFileUploadList[index].status = result
-          ? FileUploadStatus.SUCCESS
-          : FileUploadStatus.FAILED;
-        setFileUploadList(newFileUploadList);
+      let result = false;
+      if (module === "common" && commonFileUploadCallback) {
+        result = await commonFileUploadCallback(file);
+      } else if (personalFileUploadCallback) {
+        result = await personalFileUploadCallback(file);
       }
+      newFileUploadList = [...newFileUploadList];
+      newFileUploadList[index].status = result
+        ? FileUploadStatus.SUCCESS
+        : FileUploadStatus.FAILED;
+      setFileUploadList(newFileUploadList);
     }
 
     finishUploadCallback?.(newFileUploadList);
@@ -55,6 +72,36 @@ const FileUpload: React.FC = (): ReactElement => {
 
   return (
     <React.Fragment>
+      {/* Nút Back */}
+      <div
+        className="nav-button"
+        style={{
+          marginLeft: "20px",
+          display: "flex",
+          justifyContent: "flex-start",
+          alignItems: "center",
+          marginBottom: "20px",
+        }}
+      >
+        <button
+          onClick={onBack}
+          className="react-media-library__file-upload__back"
+        >
+          <FaArrowLeft style={{ marginLeft: "8px" }} /> Quay lại
+        </button>
+      </div>
+      {/* Tải lên thư mục chung hoặc cá nhân tuỳ theo module */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignContent: "center",
+        }}
+      >
+        <h2>Tải lên thư mục {module === "common" ? "chung" : "cá nhân"}</h2>
+      </div>
+
+      {/* Hiển thị khu vực Drop */}
       <div
         className={`react-media-library__file-upload ${
           isDragActive && "is-drag-active"
@@ -63,9 +110,9 @@ const FileUpload: React.FC = (): ReactElement => {
       >
         <input {...getInputProps()} />
         {isDragActive ? (
-          <p>Drop the files here ...</p>
+          <p>Kéo thả file vào đây</p>
         ) : (
-          <p>Drag 'n' drop some files here, or click to select files</p>
+          <p>Thả file vào đây hoặc click để chọn file</p>
         )}
       </div>
       {fileUploadList.length > 0 && (

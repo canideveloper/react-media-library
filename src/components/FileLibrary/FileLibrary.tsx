@@ -2,25 +2,44 @@ import React, { ReactElement, useContext, useMemo, useState } from "react";
 import FileLibraryPager from "../FileLibraryPager/FileLibraryPager";
 import { FileLibraryListItem } from "../../../types";
 import { ReactMediaLibraryContext } from "../../context/ReactMediaLibraryContext";
-import {FileLibraryPagination} from "../../../types/components/FileLibrary";
+import { FileLibraryPagination } from "../../../types/components/FileLibrary";
+import FileUpload from "../FileUpload/FileUpload"; // Import FileUpload component
+import { FaUpload } from "react-icons/fa";
+interface FileLibraryProps {
+  listType: "common" | "personal"; // Thêm props để chọn loại danh sách
+}
 
-const FileLibrary: React.FC = (): ReactElement => {
+const FileLibrary: React.FC<FileLibraryProps> = ({
+  listType,
+}): ReactElement => {
   const {
     selectedItems,
     setSelectedItems,
     sortProperty,
     sortAscending,
     multiSelect,
-    fileLibraryList,
+    commonFileLibraryList,
+    personalFileLibraryList,
     defaultSelectedItemIds,
     libraryCardComponent,
     topBarComponent,
     selectedItemsComponent,
     filesSelectCallback,
   } = useContext(ReactMediaLibraryContext);
+
+  const [isUploadVisible, setIsUploadVisible] = useState<boolean>(false); // State để hiển thị FileUpload
+
+  // Lấy dữ liệu phù hợp dựa vào listType
+  const fileLibraryList =
+    listType === "common" ? commonFileLibraryList : personalFileLibraryList;
+
   const fileLibraryListSorted = useMemo(() => {
-    return [...fileLibraryList].sort(sortArray);
+    if (fileLibraryList) {
+      return [...fileLibraryList].sort(sortArray);
+    }
+    return [];
   }, [fileLibraryList, sortArray]);
+
   const itemsPerPage = 12;
   const firstItemIndex = defaultSelectedItemIds?.length
     ? fileLibraryListSorted.findIndex(
@@ -38,7 +57,6 @@ const FileLibrary: React.FC = (): ReactElement => {
       let valA: any = sortProperty && a[sortProperty] ? a[sortProperty] : 0;
       let valB: any = sortProperty && b[sortProperty] ? b[sortProperty] : 0;
 
-      // If value is type string, ignore upper and lowercase
       if (typeof valA === "string") valA = valA.toUpperCase();
       if (typeof valB === "string") valB = valB.toUpperCase();
 
@@ -59,19 +77,15 @@ const FileLibrary: React.FC = (): ReactElement => {
     if (multiSelect) {
       const newSelectedItems = [...selectedItems];
       if (foundIndex > -1) {
-        // Remove item from selection if already exists
         newSelectedItems.splice(foundIndex, 1);
       } else {
-        // Add item to selection if not exists
         newSelectedItems.push(item);
       }
       setSelectedItems(newSelectedItems);
     } else {
       if (foundIndex > -1) {
-        // Remove item from selection
         setSelectedItems([]);
       } else {
-        // Add item to selection
         setSelectedItems([item]);
       }
     }
@@ -83,8 +97,6 @@ const FileLibrary: React.FC = (): ReactElement => {
     const arrayStart = (page - 1) * itemsPerPage;
     let arrayEnd = arrayStart + itemsPerPage;
     if (arrayEnd > fileLibraryList.length) {
-      // If calculated end extends past length of actual array
-      // Set calculated end as length of array
       arrayEnd = fileLibraryList.length;
     }
 
@@ -108,12 +120,55 @@ const FileLibrary: React.FC = (): ReactElement => {
       });
   }
 
+  const handleOnUpload = () => {
+    setIsUploadVisible(true); // Hiển thị component FileUpload
+  };
+
+  const handleOnBack = () => {
+    setIsUploadVisible(false); // Ẩn component FileUpload
+  };
+
+  if (isUploadVisible) {
+    // Nếu isUploadVisible là true, hiển thị component FileUpload
+    return <FileUpload onBack={handleOnBack} module={listType} />;
+  }
+
   return (
     <div
       className={`react-media-library__file-library ${
         selectedItems.length > 0 && "has-selected"
       }`}
     >
+      {/* Nút Upload */}
+      <div
+        className="nav-button"
+        style={{
+          marginRight: "20px",
+          display: "flex",
+          justifyContent: "flex-end",
+          marginBottom: "20px",
+        }}
+      >
+        <button
+          onClick={handleOnUpload}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            backgroundColor: "#227eff", // Màu nền
+            border: "none",
+            color: "white", // Màu chữ
+            padding: "10px 20px", // Khoảng cách padding
+            fontSize: "13px", // Kích thước chữ
+            cursor: "pointer",
+            borderRadius: "2px", // Bo góc nút
+          }}
+        >
+          <FaUpload style={{ marginRight: "8px" }} />{" "}
+          {/* Thêm icon trước chữ */}
+          Tải lên
+        </button>
+      </div>
+
       {topBarComponent && (
         <div className="react-media-library__file-library__top-bar">
           {topBarComponent()}
@@ -133,17 +188,6 @@ const FileLibrary: React.FC = (): ReactElement => {
           )}
 
           <div className="react-media-library__file-library__footer">
-            {/*{fileLibraryList?.length > itemsPerPage && (*/}
-            {/*  <FileLibraryPager*/}
-            {/*    count={total}*/}
-            {/*    page={current_page}*/}
-            {/*    total={total}*/}
-            {/*    pagerCallback={(number: number) => setPage(number)}*/}
-            {/*    itemsPerPage={per_page}*/}
-            {/*  />*/}
-            {/*)}*/}
-
-            {/** If nothing is selected but something was default selected, then show a deselect button. **/}
             {selectedItems.length === 0 &&
               defaultSelectedItemIds &&
               defaultSelectedItemIds.length > 0 && (
@@ -162,7 +206,6 @@ const FileLibrary: React.FC = (): ReactElement => {
           </div>
         </div>
 
-        {/** If something is selected, show the selected items component. **/}
         {selectedItems.length > 0 && selectedItemsComponent?.()}
       </div>
     </div>

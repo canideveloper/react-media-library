@@ -23,19 +23,19 @@ function renderBadge(status: FileUploadStatus): ReactElement {
     case FileUploadStatus.FAILED:
       return (
         <div className="react-media-library__file-upload-result__list__item__badge--failed">
-          Failed
+          Thất bại
         </div>
       );
     case FileUploadStatus.PROCESSING:
       return (
         <div className="react-media-library__file-upload-result__list__item__badge--processing">
-          Processing
+          Đang tải
         </div>
       );
     case FileUploadStatus.SUCCESS:
       return (
         <div className="react-media-library__file-upload-result__list__item__badge--success">
-          Success
+          Thành công
         </div>
       );
   }
@@ -65,7 +65,7 @@ const FileUploadResult: React.FC<FileUploadListProps> = (
 
   return (
     <div className="react-media-library__file-upload-result">
-      <h3>Uploaded Files</h3>
+      <h3>Các tệp đã tải lên</h3>
       <ul className="react-media-library__file-upload-result__list">
         {renderList()}
       </ul>

@@ -1,49 +1,47 @@
 import React, { useContext, useState } from "react";
-import { Tabs, TabsProps } from 'antd';
+import { Tabs, TabsProps } from "antd";
 import FileUpload from "../FileUpload/FileUpload";
 import FileLibrary from "../FileLibrary/FileLibrary";
 import { ReactMediaLibraryContext } from "../../context/ReactMediaLibraryContext";
 
 const ReactMediaLibraryTabs: React.FC = () => {
-	const {
-		fileUploadCallback,
-		filesSelectCallback
-	} = useContext(ReactMediaLibraryContext);
-	const [currentTab, setCurrentTab] = useState<"upload" | "browse">((filesSelectCallback || !fileUploadCallback) ? "browse" : "upload");
+  const { filesSelectCallback } = useContext(ReactMediaLibraryContext);
+  const [currentTab, setCurrentTab] = useState<"common" | "personal">("common");
 
-	const handleTabChange = (activeKey: string) => {
-		if (activeKey === "upload" || activeKey === "browse") {
-			setCurrentTab(activeKey);
-		}
-	};
+  const handleTabChange = (activeKey: string) => {
+    setCurrentTab(activeKey as "common" | "personal");
+  };
 
-	// Construct the tabs items here, filtering out undefined entries immediately
-	const tabsItems: TabsProps['items'] = []; // Explicitly define the type to match expected type
+  const tabsItems: TabsProps["items"] = [
+    {
+      label: "Thư viện chung",
+      key: "common",
+      children: <FileLibrary listType="common" />, // Sử dụng loại dữ liệu chung
+    },
+    {
+      label: "Thư viện cá nhân",
+      key: "personal",
+      children: <FileLibrary listType="personal" />, // Sử dụng loại dữ liệu cá nhân
+    },
+  ];
 
-	if (filesSelectCallback) {
-		tabsItems.push({
-			label: "Browse Files",
-			key: "browse",
-			children: <FileLibrary />
-		});
-	}
-	if (fileUploadCallback) {
-		tabsItems.push({
-			label: "Upload File",
-			key: "upload",
-			children: <FileUpload />
-		});
-	}
+  //   if (fileUploadCallback) {
+  //     tabsItems.push({
+  //       label: "Tải lên",
+  //       key: "upload",
+  //       children: <FileUpload />,
+  //     });
+  //   }
 
-	return (
-		<Tabs
-			defaultActiveKey={currentTab}
-			onChange={handleTabChange}
-			type="card"
-			className="react-media-library__tabs"
-			items={tabsItems}
-		/>
-	);
+  return (
+    <Tabs
+      defaultActiveKey={currentTab}
+      onChange={handleTabChange}
+      type="card"
+      className="react-media-library__tabs"
+      items={tabsItems}
+    />
+  );
 };
 
 export default ReactMediaLibraryTabs;
