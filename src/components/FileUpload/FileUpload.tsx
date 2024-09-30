@@ -63,28 +63,31 @@ const FileUpload: React.FC<FileUploadProps> = ({
         } else if (personalFileUploadCallback) {
           result = await personalFileUploadCallback(file);
         }
-      } else if (materialFileUploadCallback) {
-        result = await materialFileUploadCallback(file);
+      } else {
+        if (materialFileUploadCallback) {
+          console.log("Uploading material file");
+          result = await materialFileUploadCallback(file);
+        }
       }
       newFileUploadList = [...newFileUploadList];
       newFileUploadList[index].status = result
         ? FileUploadStatus.SUCCESS
         : FileUploadStatus.FAILED;
       setFileUploadList(newFileUploadList);
+      console.log(`File ${file.name} uploaded: ${result}`);
     }
 
     finishUploadCallback?.(newFileUploadList);
 
     // Kiểm tra nếu tất cả các file đã hoàn tất (không còn file nào ở trạng thái PROCESSING)
     const allUploadsFinished = newFileUploadList.every(
-      (file) =>
-        file.status === FileUploadStatus.SUCCESS ||
-        file.status === FileUploadStatus.FAILED
+      (file) => file.status === FileUploadStatus.SUCCESS
     );
 
     if (allUploadsFinished) {
       // Gọi hàm onBack để quay lại màn hình trước đó
       onBack();
+      console.log("All uploads finished");
     }
   }
 

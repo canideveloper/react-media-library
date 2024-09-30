@@ -9,7 +9,7 @@ import { FileUploadStatus } from "../../FileUploadResult/FileUploadResult";
 export type ReactMediaLibraryStory = StoryObj<typeof ReactMediaLibrary>;
 
 export const storiesDefaultPrimaryArgs: ReactMediaLibraryProps = {
-  type: "attachment",
+  type: "material",
   itemsPerPage: 0,
   page: 0,
   pagerCallback(): void {},
@@ -20,12 +20,9 @@ export const storiesDefaultPrimaryArgs: ReactMediaLibraryProps = {
   onTabChange(tab) {
     console.log(`Tab changed to ${tab}`);
   },
-  commonFileUploadCallback: storiesDefaultFileUploadCallback,
-  personalFileUploadCallback: storiesDefaultFileUploadCallback,
   fileLibraryList: [],
-  commonFileLibraryList: storiesDefaultCommonFileLibraryList,
-  materialFileLibraryList: [],
-  personalFileLibraryList: storiesDefaultPersonalFileLibraryList,
+  materialFileLibraryList: storiesDefaultCommonFileLibraryList,
+  materialFileUploadCallback: storiesDefaultFileUploadCallback,
   filesSelectCallback: (items: any[]) =>
     alert(`Selected items ${items.map((i) => i.id).join(", ")}`),
   filesDeleteCallback: (items: any[]) =>
