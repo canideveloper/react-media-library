@@ -22,6 +22,7 @@ const ReactMediaLibrary: React.FC<ReactMediaLibraryProps> = ({
   selectedItemsComponent = () => <FileLibrarySelectedItems />,
   acceptedTypes = ["image/*", "video/*", "audio/*"],
   onClose,
+  onTabChange,
   commonFileUploadCallback,
   personalFileUploadCallback,
   finishUploadCallback,
@@ -37,7 +38,7 @@ const ReactMediaLibrary: React.FC<ReactMediaLibraryProps> = ({
     Array<FileLibraryListItem>
   >([]);
   const filterDefaultSelected = fileLibraryList.filter((item) =>
-    defaultSelectedItemIds?.includes(item.id)
+    defaultSelectedItemIds?.includes(item.id ?? item.uuid ?? "")
   );
 
   useEffect(() => {
@@ -83,7 +84,9 @@ const ReactMediaLibrary: React.FC<ReactMediaLibraryProps> = ({
         sortProperty: sortProperty,
         sortAscending: sortAscending,
         acceptedTypes: acceptedTypes,
-        defaultSelectedItemIds: filterDefaultSelected.map((item) => item.id),
+        defaultSelectedItemIds: filterDefaultSelected.map(
+          (item) => item.id ?? item.uuid ?? ""
+        ),
       }}
     >
       <div className="react-media-library" onClick={handleModalOnClick}>
@@ -99,7 +102,7 @@ const ReactMediaLibrary: React.FC<ReactMediaLibraryProps> = ({
             </div>
           </div>
           <div className="react-media-library__modal__body">
-            <ReactMediaLibraryTabs />
+            <ReactMediaLibraryTabs onTabChange={onTabChange} />
 
             <FileLibraryPager
               total={total}

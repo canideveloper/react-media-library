@@ -8,7 +8,7 @@ import React, {
   useState,
 } from "react";
 import { ReactMediaLibraryStory, storiesDefaultPrimaryArgs } from "./_defaults";
-import { storiesDefaultFileLibraryList } from "./_storiesDefaultFileLibraryList";
+import { storiesDefaultCommonFileLibraryList } from "./_storiesDefaultFileLibraryList";
 import { useArgs } from "@storybook/preview-api";
 
 interface FileLibraryTopBarProps {
@@ -76,7 +76,7 @@ export const SearchBar: ReactMediaLibraryStory = (
         {...args}
         onClose={() => updateArgs({ isOpen: false })}
         topBarComponent={topBarComponent}
-        fileLibraryList={storiesDefaultFileLibraryList.filter(filterItem)}
+        fileLibraryList={storiesDefaultCommonFileLibraryList.filter(filterItem)}
       />
     </React.Fragment>
   );

@@ -3,6 +3,7 @@ import { FileLibraryListItem } from "../../../../types";
 export const storiesDefaultCommonFileLibraryList: Array<FileLibraryListItem> = [
   {
     id: 1,
+    uuid: "1",
     filename: "document_2024.pdf",
     original_filename: "project_plan.pdf",
     extension: "pdf",
@@ -19,6 +20,7 @@ export const storiesDefaultCommonFileLibraryList: Array<FileLibraryListItem> = [
   },
   {
     id: 2,
+    uuid: "2",
     filename: "profile_picture.jpg",
     original_filename: "avatar.jpg",
     extension: "jpg",
@@ -35,6 +37,7 @@ export const storiesDefaultCommonFileLibraryList: Array<FileLibraryListItem> = [
   },
   {
     id: 3,
+    uuid: "3",
     filename: "presentation_2024.pptx",
     original_filename: "company_overview.pptx",
     extension: "pptx",
@@ -52,6 +55,7 @@ export const storiesDefaultCommonFileLibraryList: Array<FileLibraryListItem> = [
   },
   {
     id: 4,
+    uuid: "4",
     filename: "sales_data.xlsx",
     original_filename: "sales_q3_2024.xlsx",
     extension: "xlsx",

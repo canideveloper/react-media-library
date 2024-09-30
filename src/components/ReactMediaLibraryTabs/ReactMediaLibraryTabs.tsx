@@ -1,16 +1,35 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Tabs, TabsProps } from "antd";
-import FileUpload from "../FileUpload/FileUpload";
 import FileLibrary from "../FileLibrary/FileLibrary";
 import { ReactMediaLibraryContext } from "../../context/ReactMediaLibraryContext";
 
-const ReactMediaLibraryTabs: React.FC = () => {
+interface ReactMediaLibraryTabsProps {
+  onTabChange?: (tab: string) => void;
+}
+
+const ReactMediaLibraryTabs: React.FC<ReactMediaLibraryTabsProps> = ({
+  onTabChange,
+}) => {
   const { type } = useContext(ReactMediaLibraryContext);
   const [currentTab, setCurrentTab] = useState<"common" | "personal">("common");
+  const [isMounted, setIsMounted] = useState(false);
 
   const handleTabChange = (activeKey: string) => {
     setCurrentTab(activeKey as "common" | "personal");
   };
+
+  useEffect(() => {
+    if (isMounted) {
+      onTabChange && onTabChange(currentTab);
+    } else {
+      setIsMounted(true);
+    }
+  }, [currentTab]);
+
+  useEffect(() => {
+    // Call onTabChange immediately when the component mounts for the first time
+    onTabChange && onTabChange(currentTab);
+  }, []);
 
   const attachmentTabsItems: TabsProps["items"] = [
     {
@@ -27,19 +46,11 @@ const ReactMediaLibraryTabs: React.FC = () => {
 
   const materialTabsItems: TabsProps["items"] = [
     {
-      label: "Thư viện chung",
+      label: "Tài liệu",
       key: "material",
       children: <FileLibrary listType="material" />, // Sử dụng loại dữ liệu chung
     },
   ];
-
-  //   if (fileUploadCallback) {
-  //     tabsItems.push({
-  //       label: "Tải lên",
-  //       key: "upload",
-  //       children: <FileUpload />,
-  //     });
-  //   }
 
   return (
     <Tabs

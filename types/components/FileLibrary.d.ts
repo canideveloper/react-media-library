@@ -1,7 +1,8 @@
 import { ReactElement } from "react";
 
 export interface FileLibraryListItem {
-  id: number;
+  id?: number;
+  uuid?: string;
   filename: string;
   original_filename: string;
   extension: string;

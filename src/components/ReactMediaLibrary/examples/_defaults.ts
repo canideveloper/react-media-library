@@ -17,6 +17,9 @@ export const storiesDefaultPrimaryArgs: ReactMediaLibraryProps = {
   multiSelect: false,
   isOpen: true,
   onClose: () => {},
+  onTabChange(tab) {
+    console.log(`Tab changed to ${tab}`);
+  },
   commonFileUploadCallback: storiesDefaultFileUploadCallback,
   personalFileUploadCallback: storiesDefaultFileUploadCallback,
   fileLibraryList: [],
