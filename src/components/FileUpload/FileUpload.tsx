@@ -74,6 +74,18 @@ const FileUpload: React.FC<FileUploadProps> = ({
     }
 
     finishUploadCallback?.(newFileUploadList);
+
+    // Kiểm tra nếu tất cả các file đã hoàn tất (không còn file nào ở trạng thái PROCESSING)
+    const allUploadsFinished = newFileUploadList.every(
+      (file) =>
+        file.status === FileUploadStatus.SUCCESS ||
+        file.status === FileUploadStatus.FAILED
+    );
+
+    if (allUploadsFinished) {
+      // Gọi hàm onBack để quay lại màn hình trước đó
+      onBack();
+    }
   }
 
   return (
