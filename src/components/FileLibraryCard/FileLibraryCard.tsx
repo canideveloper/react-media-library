@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext } from "react";
+import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { Card, Image, Typography } from "antd";
 import formatBytes from "../../utils/formatBytes";
 import { FileLibraryListItem } from "../../../types";
@@ -13,6 +13,51 @@ const FileLibraryCard: React.FC<FileLibraryListItem> = (
   const isSelected: boolean = !!selectedItems?.find(
     (element) => element.id === props.id
   );
+
+  const [imageSrc, setImageSrc] = useState<string | null>(null); // State để lưu URL blob của ảnh
+
+  // Giả sử bạn có hàm để xác định khi nào cần token
+  const requiresToken = (url: string) => {
+    // Ví dụ kiểm tra nếu url có chứa một chuỗi nhất định hoặc thuộc API yêu cầu token
+    return url.includes("https://crmapi.cani.digital/api/v1/attachments/"); // Thay thế logic này bằng logic thực tế của bạn
+  };
+
+  // Giả sử bạn có hàm để lấy token (nếu cần)
+  const token = props.token; // Thay thế logic này bằng logic thực tế của bạn
+
+  useEffect(() => {
+    async function fetchImage() {
+      if (props.thumbnail_url) {
+        try {
+          let response;
+          if (requiresToken(props.thumbnail_url)) {
+            // Nếu yêu cầu token, thêm header Authorization
+            response = await fetch(props.thumbnail_url, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+            const blob = await response.blob();
+            const imageUrl = URL.createObjectURL(blob);
+            setImageSrc(imageUrl); // Lưu URL blob vào state
+          } else {
+            setImageSrc(props.thumbnail_url); // Lưu URL blob vào state
+          }
+        } catch (error) {
+          console.error("Error fetching the image", error);
+        }
+      }
+    }
+
+    fetchImage();
+
+    // Cleanup function để hủy URL blob khi component unmount
+    return () => {
+      if (imageSrc) {
+        URL.revokeObjectURL(imageSrc);
+      }
+    };
+  }, [props.thumbnail_url]);
 
   return (
     <Card
@@ -33,15 +78,15 @@ const FileLibraryCard: React.FC<FileLibraryListItem> = (
         flex: "1 1 auto", // Để nội dung có thể co dãn
       }}
       cover={
-        props.thumbnail_url && (
+        imageSrc && (
           <Image
             alt={props.filename}
-            src={props.thumbnail_url}
+            src={imageSrc}
             preview={false}
             style={{
               height: "100px", // Chiều cao cố định của hình ảnh
               width: "100%", // Hình ảnh chiếm toàn bộ chiều rộng card
-              objectFit: "cover", // Đảm bảo hình ảnh vừa khít mà không bị méo
+              objectFit: "contain", // Đảm bảo hình ảnh vừa khít mà không bị méo
             }}
           />
         )

@@ -14,6 +14,7 @@ export interface FileLibraryListItem {
   size: number;
   thumbnail_url: string;
   path_url: string;
+  token?: string;
 
   /** Any other properties that you put in will be returned in the item data in the select, delete, & render component callbacks. **/
   [key: string]: any;
